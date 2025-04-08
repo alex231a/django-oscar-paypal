@@ -11,22 +11,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 from oscar.defaults import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7*i-qfmbhh=qrs!yd#sola$1!5ogd!q$4miniru67bt49wou49'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
+DEBUG = True
 ALLOWED_HOSTS = []
+
+###########################prod###############################################
+# DEBUG = False #uncomment for prod environment
+# ALLOWED_HOSTS = ['oyakovenko.pythonanywhere.com',] #uncomment for prod environment
 
 
 # Application definition
@@ -81,6 +79,7 @@ INSTALLED_APPS = [
     'django_tables2',
 
     'paypal',
+    'rest_framework'
 ]
 
 SITE_ID = 1
@@ -200,10 +199,18 @@ PAYPAL_SANDBOX_MODE = True
 PAYPAL_CALLBACK_HTTPS = False
 PAYPAL_API_VERSION = '119'
 
-PAYPAL_API_USERNAME = 'sb-qr6qb37716091_api1.business.example.com'
-PAYPAL_API_PASSWORD = 'KLWZ6CTBZMU9YYJZ'
-PAYPAL_API_SIGNATURE = \
-    'ABKCayh4bsZU9o4g5AXgoCnFJjldAokffJpuqTMZx9Xf7BAIFB4VUMAJ'
+###########################prod###############################################
+#uncomment for python anywhere
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+# PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
+# PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
+# PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
+
+
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+PAYPAL_API_USERNAME = config('PAYPAL_API_USERNAME')
+PAYPAL_API_PASSWORD = config('PAYPAL_API_PASSWORD')
+PAYPAL_API_SIGNATURE = config('PAYPAL_API_SIGNATURE')
 
 PAYPAL_BRAND_NAME = 'BOOKSHOP'
 PAYPAL_BUYERS_PAYS_ON_PAYPAL = True
